@@ -104,11 +104,11 @@
         </select>
       </div>
 
-      <!-- Counselor Dropdown -->
+      <!-- Counselor Email Dropdown -->
       <div class="form-group">
-        <label for="counselorName">Counselor Name</label>
-        <select id="counselorName" name="counselorName">
-          <option value="">-- Select Counselor --</option>
+        <label for="counselorEmail">Counselor Email</label>
+        <select id="counselorEmail" name="counselorEmail">
+          <option value="">-- Select Counselor Email --</option>
         </select>
       </div>
 
@@ -168,14 +168,14 @@
         verticalSelect.appendChild(opt);
       });
 
-      // Populate Counselor (all unique names)
-      const counselorSelect = document.getElementById("counselorName");
-      counselorSelect.innerHTML = '<option value="">-- Select Counselor --</option>';
-      const uniqueCounselors = [...new Set(records.map(r => (r["Counselor Name"] || "").trim()).filter(Boolean))];
-      uniqueCounselors.forEach(name => {
+      // Populate Counselor Email (changed from Counselor Name to Email ID)
+      const counselorSelect = document.getElementById("counselorEmail");
+      counselorSelect.innerHTML = '<option value="">-- Select Counselor Email --</option>';
+      const uniqueCounselorEmails = [...new Set(records.map(r => (r["Email ID"] || "").trim()).filter(Boolean))];
+      uniqueCounselorEmails.forEach(email => {
         const opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name;
+        opt.value = email;
+        opt.textContent = email;
         counselorSelect.appendChild(opt);
       });
 
@@ -249,7 +249,7 @@
 
     const payload = {
       vertical: document.getElementById("vertical").value,
-      counselorName: document.getElementById("counselorName").value,
+      counselorEmail: document.getElementById("counselorEmail").value, // Changed from counselorName to counselorEmail
       productId: document.getElementById("ProductIdName").value,
       productType: document.getElementById("ProductTypeName").value,
       email: document.getElementById("email").value,
@@ -297,5 +297,6 @@
   }
 
   </script>
+
 </body>
 </html>
