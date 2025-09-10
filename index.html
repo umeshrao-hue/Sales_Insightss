@@ -5,89 +5,332 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Insights Report Request</title>
   <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            background: #f7f7f7;            
-            display: flex; 
-            justify-content: center; 
-            align-items: center;            
-            min-height: 100vh; 
-            margin: 0; 
-        }
-        .form-container { 
-            background: #fff; 
-            padding: 25px; 
-            border-radius: 10px;                       
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);                       
-            width: 100%; 
-            max-width: 500px; 
-        }
-        h2 { 
-            text-align: center; 
-            margin-bottom: 20px; 
-            color: #333;
-        }
-        .form-group { 
-            margin-bottom: 15px; 
-        }
-        label { 
-            display: block; 
-            margin-bottom: 5px; 
-            font-weight: bold; 
-            color: #555;
-        }
-        input, select { 
-            width: 100%; 
-            padding: 10px; 
-            border: 1px solid #ccc;                     
-            border-radius: 5px; 
-            font-size: 16px;
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill=%23ffffff opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+            z-index: -1;
+        }
+        
+        .form-container { 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 
+                0 20px 40px rgba(0,0,0,0.1),
+                0 0 0 1px rgba(255,255,255,0.2);
+            width: 100%; 
+            max-width: 550px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        h2 { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+        
+        .form-group { 
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+            color: #34495e;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        input, select { 
+            width: 100%; 
+            padding: 14px 16px; 
+            border: 2px solid #e8ecef;
+            border-radius: 12px; 
+            font-size: 16px;
+            background: #ffffff;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+        
         input:focus, select:focus {
             outline: none;
             border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            box-shadow: 
+                0 0 0 3px rgba(102, 126, 234, 0.1),
+                0 4px 12px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
         }
+
+        input:hover, select:hover {
+            border-color: #bdc3c7;
+            transform: translateY(-1px);
+        }
+
+        input[type="email"] {
+            background: linear-gradient(45deg, #f8f9ff, #ffffff);
+        }
+
+        input[type="date"] {
+            background: linear-gradient(45deg, #fff8f0, #ffffff);
+        }
+
+        select {
+            background: linear-gradient(45deg, #f0fff4, #ffffff);
+            cursor: pointer;
+        }
+
+        .date-range-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .date-range-container input {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .date-range-separator {
+            color: #7f8c8d;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
         button { 
             width: 100%; 
-            padding: 12px; 
-            background: #667eea; 
-            color: white;              
+            padding: 16px 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             border: none; 
-            border-radius: 5px; 
+            border-radius: 12px; 
             font-size: 16px; 
+            font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+        
         button:hover { 
-            background: #5563d4; 
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+            background: linear-gradient(135deg, #5a67d8 0%, #6b4c93 100%);
         }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+        
         button:disabled {
-            background: #ccc;
+            background: linear-gradient(135deg, #bdc3c7, #95a5a6);
             cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+
+        button:disabled:hover {
+            transform: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
         .success-message {
             display: none;
-            background: #d4edda;
-            color: #155724;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            border: 1px solid #c3e6cb;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+            animation: slideIn 0.5s ease-out;
         }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
         .loading-spinner {
             display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #ffffff;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 8px;
+            border-top-color: #ffffff;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
         }
+        
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        /* Form field icons */
+        .form-group::before {
+            content: '';
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            opacity: 0.3;
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .form-group:has(select[id="vertical"])::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23667eea' viewBox='0 0 24 24'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/%3E%3C/svg%3E");
+        }
+
+        .form-group:has(input[type="email"])::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23667eea' viewBox='0 0 24 24'%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
+            top: 44px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+            
+            .date-range-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .date-range-separator {
+                align-self: center;
+            }
+            
+            input, select {
+                padding: 12px 14px;
+            }
+            
+            button {
+                padding: 14px 18px;
+                font-size: 14px;
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .form-container {
+                background: #ffffff;
+                border: 2px solid #000000;
+            }
+            
+            input, select {
+                border: 2px solid #000000;
+            }
+            
+            button {
+                background: #000000;
+                border: 2px solid #000000;
+            }
         }
     </style>
 </head>
@@ -130,16 +373,18 @@
 
       <!-- Email (manual entry only) -->
       <div class="form-group">
-        <label for="email">Email Address</label>
+        <label for="email">Email Address (Insight)</label>
         <input type="email" id="email" name="email" placeholder="Enter email manually">
       </div>
 
       <!-- Date Range -->
       <div class="form-group">
         <label>Date Range</label>
-        <input type="date" id="startDate" name="startDate">
-        to
-        <input type="date" id="endDate" name="endDate">
+        <div class="date-range-container">
+          <input type="date" id="startDate" name="startDate">
+          <span class="date-range-separator">to</span>
+          <input type="date" id="endDate" name="endDate">
+        </div>
       </div>
 
       <button type="submit" id="submitBtn">Generate Report</button>
